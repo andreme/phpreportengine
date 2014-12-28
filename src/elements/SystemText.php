@@ -8,7 +8,7 @@ class SystemText extends Text {
 	const TYPE_PAGENOOFPAGES = 'PageNoOfPages';
 	const TYPE_PRINTTIME = 'PrintTime';
 
-	private $type;
+	protected $type;
 
 	public function __construct($type) {
 		parent::__construct();
