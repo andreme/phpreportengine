@@ -121,6 +121,12 @@ class Group extends ControlStructure {
 						$this->riStage = 'StartGroup';
 					}
 
+					$this->element->setRecord($this->riRecord);
+
+					$this->renderDetailControlStructures();
+
+					$this->element->setRecord($this->riPrevRecord);
+
 					$this->renderFooters();
 
 					if ($this->element->getPageBreakBetweenGroups()) {

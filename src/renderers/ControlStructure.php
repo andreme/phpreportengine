@@ -42,6 +42,18 @@ class ControlStructure extends ParentElement {
 		}
 	}
 
+	protected function renderDetailControlStructures() {
+		$details = $this->childRenderers->get(\AndreMe\PHPReportEngine\Elements\Element::POSITION_DETAIL);
+
+		$this->riQueue = array_filter($details, function ($renderer) {
+			return $renderer instanceof ControlStructure;
+		});
+
+		if ($this->renderQueue(0)) {
+			throw new \Exception('Broken?');
+		}
+	}
+
 	protected function getHeaders($pageBreak = false) {
 		$headers = $this->childRenderers->get(\AndreMe\PHPReportEngine\Elements\Element::POSITION_HEADER);
 

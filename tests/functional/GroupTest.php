@@ -73,6 +73,19 @@ class GroupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals("1\nDetail\n1\n2\nDetail\n2\n", $rb->render());
 	}
 
+	public function testLastSubGroupFooterIsDisplayed() {
+		$rb = $this->createTextReport([['Cond' => 1, 'OuterCond' => 2]]);
+
+		$rb->getReport()->add($outerGroup = new Elements\Group('OuterCond'));
+
+		$outerGroup->add($group = new Elements\Group('Cond'));
+
+			$group->add($band = new Elements\FooterBand());
+				$band->add(new Elements\Text('InnerGroupFooter'));
+
+		$this->assertEquals("InnerGroupFooter\n", $rb->render());
+	}
+
 	public function testDetailDataSource() {
 		$rb = $this->createTextReport([['Cond' => 1], ['Cond' => 2]]);
 
