@@ -1,0 +1,22 @@
+{
+	"name" : "andreme/phpreportengine",
+	"description" : "PHP Report Engine",
+	"license" : "MIT",
+	"require" : {
+		"php" : ">=5.4"
+	},
+	"require-dev" : {
+		"phpunit/phpunit" : "~4.0"
+	},
+	"authors" : [{
+			"name" : "Andre Meyer",
+			"email" : "amozaq+os@gmail.com"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"AndreMe\\PHPReportEngine\\" : "src"
+		},
+		"files": ["src/Interfaces.php"]
+	}
+}
