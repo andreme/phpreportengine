@@ -8,6 +8,14 @@ class ControlStructure extends ParentElement {
 	protected $riRecord;
 	protected $dontPrintHeaderFooterOnPageBreak = false;
 
+	protected $datasourceUpdateListeners;
+
+	public function init() {
+		parent::init();
+
+		$this->initDatasourceUpdateListeners();
+	}
+
 	protected function onRenderEvent($stage) {
 		if (($stage == MainRenderer::RENDER_STAGE_PAGEBREAK) and !$this->dontPrintHeaderFooterOnPageBreak) {
 			$currentQueue = array_merge(
@@ -73,6 +81,33 @@ class ControlStructure extends ParentElement {
 		}
 
 		return $footerHeight;
+	}
+
+	protected function initDatasourceUpdateListeners() {
+		$this->datasourceUpdateListeners = array_filter($this->element->getChildElements('AndreMe\PHPReportEngine\Elements\ControlStructure'), function ($element) {
+			return $element instanceof \AndreMe\PHPReportEngine\IDatasourceUpdateListener;
+		});
+	}
+
+	protected function notifyDatasourceUpdateListenersOfNewRecord() {
+		foreach ($this->datasourceUpdateListeners as $element) {
+			/* @var $element \AndreMe\PHPReportEngine\IDatasourceUpdateListener */
+			$element->onNextRecord($this->riRecord);
+		}
+	}
+
+	protected function notifyDatasourceUpdateListenersOfReset() {
+		foreach ($this->datasourceUpdateListeners as $element) {
+			/* @var $element \AndreMe\PHPReportEngine\IDatasourceUpdateListener */
+			$element->onReset($this->riRecord);
+		}
+	}
+
+	protected function advanceRecord() {
+		$this->element->setRecord($this->riRecord);
+		if ($this->riRecord !== false) {
+			$this->notifyDatasourceUpdateListenersOfNewRecord($this->riRecord);
+		}
 	}
 
 }

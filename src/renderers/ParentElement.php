@@ -24,12 +24,16 @@ class ParentElement extends Element {
 		$this->childRenderers = new RendererList();
 	}
 
-	public function createRenderers() {
+	public function init() {
+		$this->createRenderers();
+	}
+
+	protected function createRenderers() {
 		foreach ($this->element->getElements() as $element) {
 			$this->childRenderers->add($elRend = $this->mainRenderer->createRenderer($element, $this));
 
 			if ($element instanceof \AndreMe\PHPReportEngine\Elements\ParentElement) {
-				$elRend->createRenderers();
+				$elRend->init();
 			}
 		}
 	}

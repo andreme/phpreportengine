@@ -39,7 +39,7 @@ class MainRenderer {
 
 	public function render() {
 		$reportRenderer = $this->createRenderer($this->report, null);
-		$reportRenderer->createRenderers();
+		$reportRenderer->init();
 
 		$this->startReport();
 

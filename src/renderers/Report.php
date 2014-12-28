@@ -35,7 +35,6 @@ class Report extends ControlStructure {
 		switch ($this->riStage) {
 			case 'Start':
 				return $this->renderStart();
-				break;
 			case 'Details':
 				$this->riPrevRecord = $this->riRecord;
 				$this->riRecord = $this->riDataSource->next();
@@ -44,7 +43,7 @@ class Report extends ControlStructure {
 					$this->riStage = 'Finished';
 				}
 
-				$this->element->setRecord($this->riRecord);
+				$this->advanceRecord();
 
 				$this->riQueue = $this->getDetails();
 
@@ -67,7 +66,7 @@ class Report extends ControlStructure {
 
 		$this->riPrevRecord = $this->riRecord;
 
-		$this->element->setRecord($this->riRecord);
+		$this->advanceRecord();
 
 		$this->riStage = 'Details';
 		$this->riQueue = array_merge(

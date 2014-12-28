@@ -12,7 +12,7 @@ class Group extends ControlStructure {
 
 	private $footerHeight;
 
-	private $riLastValue;
+	private $riLastConditionValue;
 	private $riStage = 'Start';
 	private $riHasDetailDataSource;
 	/**
@@ -78,10 +78,12 @@ class Group extends ControlStructure {
 					$this->riRecord = $masterRecord;
 				}
 
-				$this->element->setRecord($this->riRecord);
+				$this->notifyDatasourceUpdateListenersOfReset();
+
+				$this->advanceRecord();
 				$this->riPrevRecord = $this->riRecord;
 
-				$this->riLastValue = $conditionValue;
+				$this->riLastConditionValue = $conditionValue;
 
 				$this->riStage = 'FirstGroupRecord';
 				$this->riQueue = $this->getHeaders();
@@ -111,7 +113,7 @@ class Group extends ControlStructure {
 
 				$conditionValue = $this->getConditionValue($this->riRecord);
 
-				if ($this->riLastValue !== $conditionValue) {
+				if ($this->riLastConditionValue !== $conditionValue) {
 
 					if ($this->riRecord === false) {
 						$this->riStage = 'End';
@@ -134,7 +136,7 @@ class Group extends ControlStructure {
 					return MainRenderer::RENDER_STAGE_AGAIN;
 				}
 
-				$this->element->setRecord($this->riRecord);
+				$this->advanceRecord();
 
 				$this->riQueue = $this->getDetails();
 				break;
